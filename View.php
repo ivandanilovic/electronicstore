@@ -23,6 +23,10 @@ abstract class View
         if (!isset($_SESSION))
         {
             session_start();
+            if (!isset($_SESSION['cart']))
+            {
+                $_SESSION['cart'] = array();
+            }
         }
         echo'
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -137,7 +141,7 @@ abstract class View
                 <div class="cart_title">Shopping cart</div>
                 <div class="cart_details"> '.count($_SESSION['cart']).' items <br /> 
                   <span class="border_cart"></span> Total: <span class="price">';
-        $controller=new controllerProizvod();
+        $controller=new ControllerProizvod();
         echo sprintf("%.2f", $controller->cartPrice($_SESSION['cart']));
         /*
          * ime_promenljive
@@ -145,7 +149,7 @@ abstract class View
          * imeFunkcije
          * */
         echo ' rsd</span> </div>
-                <div class="cart_icon"><a href="#" title="header=[Checkout] body=[&nbsp;] fade=[on]"><img src="images/shoppingcart.png" alt="" width="48" height="48" border="0" /></a></div>
+                <div class="cart_icon"><a href="Kupovina.php" title="header=[Checkout] body=[&nbsp;] fade=[on]"><img src="images/shoppingcart.png" alt="" width="48" height="48" border="0" /></a></div>
               </div>
               <div class="title_box">What’s new</div>
               ';

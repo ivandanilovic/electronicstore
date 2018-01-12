@@ -8,7 +8,7 @@
 require_once ("Controller.php");
 require_once ("NoviProizvod.php");
 
-class ControllerNoviProizvod extends controller
+class ControllerNoviProizvod extends Controller
 {
     public function load()
     {

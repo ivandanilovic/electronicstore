@@ -10,8 +10,9 @@ require_once("Controller.php");
 require_once("ModelProizvoda.php");
 require_once ("ViewProizvodi.php");
 require_once ("ViewPregledProizvoda.php");
+require_once ("ViewKupovina.php");
 
-class controllerProizvod extends controller
+class ControllerProizvod extends Controller
 {
 
     public function load($id = 0) // Podrazumijevani parametar: ako ne navedemo ništa, pretpostaviće '0'.
@@ -76,6 +77,19 @@ class controllerProizvod extends controller
             $suma += ($rezultat['akcijskacena']==0 ? $rezultat['cena'] : $rezultat['akcijskacena']);
         }
         return $suma;
+    }
+
+    public function loadCart($id_array)
+    {
+        $proizvodi=array();
+        foreach ($id_array as $id)
+        {
+            $upit = "SELECT * FROM proizvodi WHERE id='" . $id . "'";
+            $red = mysqli_fetch_assoc(mysqli_query($this->db, $upit));
+            array_push($proizvodi,new Proizvod($red['id'], $red['naziv'], $red['cena'], $red['akcijskacena'], $red['kolicina'], $red['kategorija']));
+        }
+        $view = new ViewKupovina();
+        $view->showPage($proizvodi);
     }
 
     /*public function loadNoviProizvod($id)

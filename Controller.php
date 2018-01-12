@@ -7,7 +7,7 @@
  */
 require_once("View.php");
 
-abstract class controller
+abstract class Controller
 {
     protected $db;
 

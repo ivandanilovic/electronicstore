@@ -12,5 +12,5 @@ if(empty($_GET))
     header("Location: Index.php");
 }
 
-$k = new controllerProizvod();
+$k = new ControllerProizvod();
 $k->loadBrend($_GET['id']);

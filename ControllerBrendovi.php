@@ -9,7 +9,7 @@
 require_once("Controller.php");
 require_once ("ModelBrendovi.php");
 
-class controllerBrendovi extends controller
+class controllerBrendovi extends Controller
 {
     public function load()
     {

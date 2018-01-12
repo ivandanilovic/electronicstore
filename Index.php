@@ -28,5 +28,5 @@ if (isset($_GET))
 
 }
 
-$k = new controllerProizvod();
+$k = new ControllerProizvod();
 $k->load();
