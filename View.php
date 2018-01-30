@@ -5,6 +5,18 @@
  * Date: 11/20/2017
  * Time: 8:19 PM
  */
+if (!isset($_SESSION))
+{
+    session_start();
+    if (!isset($_SESSION['cart']))
+    {
+        $_SESSION['cart'] = array();
+    }
+    if (!isset($_SESSION['user_id']))
+    {
+        $_SESSION['user_id'] = 0;
+    }
+}
 
 require_once("ModelProizvoda.php");
 require_once("ModelBrendovi.php");
@@ -20,14 +32,6 @@ abstract class View
     public function showPage($data)
 
     {
-        if (!isset($_SESSION))
-        {
-            session_start();
-            if (!isset($_SESSION['cart']))
-            {
-                $_SESSION['cart'] = array();
-            }
-        }
         echo'
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
@@ -81,7 +85,7 @@ abstract class View
                     <li class="divider"></li>
                     <li><a href="#" class="nav3">Specials</a></li>
                     <li class="divider"></li>
-                    <li><a href="#" class="nav4">My account</a></li>
+                    <li><a href="#" class="nav4">My account' . ($_SESSION["user_id"]>0 ? " [" . $_SESSION["user_id"] . "]" : "") . '</a></li>
                     <li class="divider"></li>
                     <li><a href="#" class="nav4">Sign Up</a></li>
                     <li class="divider"></li>
@@ -131,7 +135,7 @@ abstract class View
         ';
 
 
-        $this->showContent($data);
+        $this->showContent($data); // Na osnovu tipa view-a se zna koji showContent se poziva.
 
         echo '
             </div>

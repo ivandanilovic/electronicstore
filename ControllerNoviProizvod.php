@@ -12,7 +12,6 @@ class ControllerNoviProizvod extends Controller
 {
     public function load()
     {
-        // TODO: Implement load() method.
         $upit = "SELECT * FROM proizvodi";
         $rezultat = mysqli_query($this->db, $upit); // Ovdje će biti upisan blok podataka koji nam vrati ovaj upit.
         $proizvod = array(); // Stvaramo novi niz.

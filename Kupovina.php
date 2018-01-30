@@ -7,7 +7,7 @@
  */
 require_once("ControllerProizvod.php");
 
-session_start();
+
 
 $k=new ControllerProizvod();
 $k->loadCart($_SESSION['cart']);

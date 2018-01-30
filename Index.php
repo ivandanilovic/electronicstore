@@ -8,7 +8,7 @@
 
 require_once("ControllerProizvod.php");
 
-session_start();
+
 
 if (isset($_GET))
 {
