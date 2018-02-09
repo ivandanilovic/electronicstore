@@ -27,13 +27,16 @@ class ControllerProizvod extends Controller
         $view->showPage($proizvodi);
     }
 
-    public function loadProizvod($id) // Podrazumijevani parametar: ako ne navedemo ništa, pretpostaviće '0'.
+    public function loadProizvod($id)
     {
-        $upit = "SELECT * FROM proizvodi WHERE id = '" . $id . "'";
+        $upit = "SELECT p.id, p.naziv, p.cena, p.akcijskacena, p.kolicina, kategorije.naziv
+                 FROM proizvodi AS p
+                 INNER JOIN kategorije ON kategorije.id = p.kategorija AND p.id = '" . $id . "'";
         $rezultat = mysqli_query($this->db, $upit);
+
         $proizvodi = array();
-        $red = mysqli_fetch_assoc($rezultat); // Red sa podacima 'glavnog' proizvoda (onog koji prikazujemo).
-        $proizvod = new Proizvod($red['id'], $red['naziv'], $red['cena'], $red['akcijskacena'], $red['kolicina'], $red['kategorija']);
+        $red = mysqli_fetch_row($rezultat); // Red sa podacima 'glavnog' proizvoda (onog koji prikazujemo).
+        $proizvod = new Proizvod($red[0], $red[1], $red[2], $red[3], $red[4], $red[5]);
         array_push($proizvodi, $proizvod); // Dodali smo glavni proizvod.
         $slicni = $this->loadSlicniProizvodi($proizvod);
         foreach($slicni as $slican) array_push($proizvodi, $slican);

@@ -27,7 +27,7 @@ class ViewPregledProizvoda extends View
               <div class="details_big_box">
                 <div class="product_title_big">' . $proizvodi[0]->getNaziv() . '</div>
                 <div class="specifications"> Disponibilitate: <span class="blue">In stoc</span><br />
-                  Garantie: <span class="blue">24 luni</span><br />
+                  Kategorija: <span class="blue">' . $proizvodi[0]->getKategorija() . '</span><br />
                   Tip transport: <span class="blue">Mic</span><br />
                   Pretul include <span class="blue">TVA</span><br />
                 </div>
