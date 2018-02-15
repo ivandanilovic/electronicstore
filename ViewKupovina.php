@@ -31,8 +31,8 @@ class ViewKupovina extends View
         $k = new ControllerProizvod();
         echo '</br>Suma: ' .sprintf("%.2f", $k->cartPrice($_SESSION['cart'])).' rsd
         <br> <form method="get"  action="';
-            echo ($_SESSION["user_id"]>0 ? "Checkout.php" : "Login.php?action=login"); // Ako korisnik nije ulogovan, 'user_id' je 0.
-        echo '"><button type="submit">Checkout</button></form>';
+            echo ($_SESSION["user_id"]>0 ? "Checkout.php" : "Login.php"); // Ako korisnik nije ulogovan, 'user_id' je 0.
+        echo '"><button type="submit">'. ($_SESSION['user_id'] > 0 ? 'Checkout' : 'Login') .'</button></form>';
 
     }
 }

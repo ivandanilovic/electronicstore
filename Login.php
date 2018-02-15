@@ -11,15 +11,12 @@ require_once("ControllerUser.php");
 
 $k = new ControllerUser();
 
-if(!empty($_GET)) // tj. ako je poslat GET req
-{
-    $k->showLogin();
-}
-elseif(!empty($_POST))
+
+if(!empty($_POST)) // ako smo poslali parametre onda tereba obraditi login
 {
     $k->validateLogin($_POST['username'], $_POST['password']);
 }
-else
+else // ako nema parametara prikazi formu login
 {
-    header("Location: Login.php"); // Message?
+    $k->showLogin();
 }
