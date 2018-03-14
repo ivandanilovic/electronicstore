@@ -27,8 +27,15 @@ class ViewProizvodi extends View
             echo '
                     </div>
                     <div class="bottom_prod_box"></div>
-                    <div class="prod_details_tab"> <a href="Index.php?id='.$proizvod->getId().'&action=addtocart" title="header=[Add to cart] body=[&nbsp;] fade=[on]"><img src="images/cart.gif" alt="" border="0" class="left_bt" /></a> <a href="#" title="header=[Specials] body=[&nbsp;] fade=[on]"><img src="images/favs.gif" alt="" border="0" class="left_bt" /></a> <a href="#" title="header=[Gifts] body=[&nbsp;] fade=[on]"><img src="images/favorites.gif" alt="" border="0" class="left_bt" /></a> <a href="Proizvod.php?id='.$proizvod->getId().'&&Proizvod.php?kategorija='.$proizvod->getKategorija().'" class="prod_details">details</a> </div>
-                  </div>
+                    <div class="prod_details_tab"> <a href="Index.php?id='.$proizvod->getId().'&action=addtocart" title="header=[Add to cart] body=[&nbsp;] fade=[on]"><img src="images/cart.gif" alt="" border="0" class="left_bt" /></a> <a href="#" title="header=[Specials] body=[&nbsp;] fade=[on]"><img src="images/favs.gif" alt="" border="0" class="left_bt" /></a> <a href="#" title="header=[Gifts] body=[&nbsp;] fade=[on]"><img src="images/favorites.gif" alt="" border="0" class="left_bt" /></a>
+                     ';
+
+                    if ($_SESSION['privilegija']>=2) echo '<a href="Index.php?id='.$proizvod->getId().'&action=delete" title="header=[delete product] body=[&nbsp;] fade=[on]"><img src="images/cart.gif" alt="" border="0" class="left_bt" /></a>';
+                    echo '
+                     <a href="Proizvod.php?id='.$proizvod->getId().'&&Proizvod.php?kategorija='.$proizvod->getKategorija().'" class="prod_details">details</a> 
+                    
+                    </div> 
+                </div>
                 ';
         }
     }

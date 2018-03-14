@@ -20,7 +20,7 @@ class ControllerUser extends Controller
 
     public function validateLogin($username, $password)
     {
-        $upit = "SELECT id FROM users WHERE username='". $username ."' AND password='". $password ."'";
+        $upit = "SELECT id, privilegija FROM users WHERE username='". $username ."' AND password='". $password ."'";
         $rezultat = mysqli_query($this->db, $upit); // Odradimo upit i odmah izvadimo prvi (i, nadamo se, jedini) red kao asocijativni niz.
         if(!$rezultat) // Ako nema rezultata...
         {
@@ -28,9 +28,12 @@ class ControllerUser extends Controller
         }
         else {
             $red = $rezultat->fetch_assoc();
-            $_SESSION["user_id"] = $red['id'];
+
+            $_SESSION["user_id"] = (int)$red['id'];
+            $_SESSION["privilegija"] = (int)$red['privilegija'];
+
             // Vraćamo se na kupovinu:
-           header("Location: Kupovina.php");
+            header("Location: Kupovina.php");
         }
     }
 
@@ -60,6 +63,19 @@ class ControllerUser extends Controller
         $upit = "INSERT INTO porudzbine (iduser, cena) VALUES ('". $id ."', '". $suma ."')";
         // Provjeriti usješnost query-ja?
         mysqli_query($this->db, $upit); // Dodati poruku o (ne)uspješnoj porudžbini?
+
+        foreach ($proizvodi as $proizvod_id)
+        {
+            $upit = "SELECT * FROM proizvodi WHERE id = '".$proizvod_id."'";
+            $red = mysqli_query($this->db, $upit)->fetch_assoc();
+            $kolicina = intval($red['kolicina']) - 1;   // I: calculate value of int - intval($red['kolicina'])
+                                                        // II: cast to type int - (int)$red['kolicina']
+            // proveriti kolicina veca od 0
+            $upit = "UPDATE proizvodi SET kolicina='". $kolicina ."' WHERE id = '".$proizvod_id."'";
+            // Provjeriti usješnost query-ja?
+            mysqli_query($this->db, $upit);
+        }
+
         $_SESSION['cart'] = array();
         $k = new ControllerProizvod();
         $k->load();

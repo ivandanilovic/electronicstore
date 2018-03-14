@@ -23,6 +23,11 @@ if (isset($_GET))
             array_push($_SESSION['cart'], $_GET['id']);
 
         }
+        if ($_GET['action']=='delete')
+        {
+            $k = new ControllerProizvod();
+            $k->deleteProizvod($_GET['id']);
+        }
 
     }
 

@@ -11,6 +11,8 @@ require_once("ModelProizvoda.php");
 require_once ("ViewProizvodi.php");
 require_once ("ViewPregledProizvoda.php");
 require_once ("ViewKupovina.php");
+require_once ("ViewDodavanjeProizvoda.php");
+require_once ("ModelKategorije.php");
 
 class ControllerProizvod extends Controller
 {
@@ -25,6 +27,13 @@ class ControllerProizvod extends Controller
         }
         $view = new ViewProizvodi();
         $view->showPage($proizvodi);
+    }
+
+    public function deleteProizvod($id)
+    {
+        $upit = "DELETE FROM  proizvodi WHERE id='".$id."'";
+        mysqli_query($this->db, $upit);
+        // ne pozivamo view jer pozivajuća skripta Index.php to sama radi nakon ovoga
     }
 
     public function loadProizvod($id)
@@ -93,6 +102,28 @@ class ControllerProizvod extends Controller
         }
         $view = new ViewKupovina();
         $view->showPage($proizvodi);
+    }
+
+    public function prikaziDodavanjeProizvoda() // !! isto za brend
+    {
+        $upit = "SELECT * FROM kategorije ";
+        $kategorije = mysqli_query($this->db, $upit);
+        $niz_kategorija=array();
+        $niz_brendova = array();
+        while ($kategorija = mysqli_fetch_assoc($kategorije)) // fetch vraća null kada smo došli do kraja $kategorije; logički, null == false
+        {
+            array_push($niz_kategorija, new ModelKategorije($kategorija['id'],$kategorija['naziv']));
+        }
+        $view = new ViewDodavanjeProizvoda();
+        $view->showPage(array(kategorije => $niz_kategorija, brendovi => $niz_brendova));//asocijativni niz
+    }
+
+    public function dodajProizvod($naziv, $cena, $akijskacena, $kolicina, $kategorija, $brend) // ??
+    {
+        $upit = "INSERT INTO proizvodi (id, naziv, cena, akijskacena, kolicina, kategorija, brend) 
+                 VALUES (null, '".$naziv."', '".$cena."', '".$akijskacena."', '".$kolicina."', '".$kategorija."', '".$brend."')";
+        var_dump($upit);
+        mysqli_query($this->db, $upit);
     }
 
     /*public function loadNoviProizvod($id)

@@ -16,6 +16,10 @@ if (!isset($_SESSION))
     {
         $_SESSION['user_id'] = 0;
     }
+    if (!isset($_SESSION['privilegija']))
+    {
+        $_SESSION['privilegija'] = 0;
+    }
 }
 
 require_once("ModelProizvoda.php");
@@ -85,13 +89,13 @@ abstract class View
                     <li class="divider"></li>
                     <li><a href="#" class="nav3">Specials</a></li>
                     <li class="divider"></li>
-                    <li><a href="#" class="nav4">My account' . ($_SESSION["user_id"]>0 ? " [" . $_SESSION["user_id"] . "]" : "") . '</a></li>
+                    <li><a href="Login.php" class="nav4">' . ($_SESSION["user_id"]>0 ? "My accaunt [" . $_SESSION["user_id"] . "]" : "Login") . '</a></li>
                     <li class="divider"></li>
                     <li><a href="#" class="nav4">Sign Up</a></li>
                     <li class="divider"></li>
                     <li><a href="#" class="nav5">Shipping</a></li>
                     <li class="divider"></li>
-                    <li><a href="contact.html" class="nav6">Contact Us</a></li>
+                    <li><a href="DodajProizvod.php" class="nav6">' . ($_SESSION["privilegija"]>0 ? "Dodaj proizvod " : "Contact Us") . '</a></li>
                     <li class="divider"></li>
                     <li class="currencies">Currencies
                       <select>
