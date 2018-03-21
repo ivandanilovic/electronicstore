@@ -11,7 +11,7 @@ class ViewDodavanjeProizvoda extends View
     public function showContent($data)
     {
         echo '
-        <form method="post" action="DodajProizvod.php">
+        <form method="post" action="DodajProizvod.php" enctype="multipart/form-data">
             <label>Naziv:</label><input type="text" name="Naziv"/> <br>
             <label>Cena:</label><input type="text" name="Cena"/> <br>
             <label>Akcijska Cena:</label><input type="text" name="AkcijskaCena"/> <br>
@@ -27,6 +27,7 @@ class ViewDodavanjeProizvoda extends View
             </select>
             <br>
             <label>Brend:</label><input type="text" name="Brend"/> <br>
+            <input type="file" name="Slika" id="Slika"/> <br>
             <button type="submit">Dodaj</button>
         </form>
         ';

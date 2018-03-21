@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 22, 2017 at 07:50 PM
+-- Generation Time: Mar 21, 2018 at 08:06 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 5.6.31
 
@@ -70,6 +70,41 @@ INSERT INTO `kategorije` (`id`, `naziv`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `porudzbine`
+--
+
+CREATE TABLE `porudzbine` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `iduser` int(11) UNSIGNED NOT NULL,
+  `cena` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- Dumping data for table `porudzbine`
+--
+
+INSERT INTO `porudzbine` (`id`, `iduser`, `cena`) VALUES
+(1, 2, 32049),
+(2, 2, 83049),
+(3, 1, 53499),
+(4, 1, 31500),
+(5, 1, 19900),
+(6, 1, 31500),
+(7, 1, 31500),
+(8, 1, 31500),
+(9, 1, 31500),
+(10, 1, 31500),
+(11, 1, 31500),
+(12, 1, 31500),
+(13, 1, 63000),
+(14, 1, 31500),
+(15, 3, 31500),
+(16, 3, 31500),
+(17, 3, 31500);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `proizvodi`
 --
 
@@ -80,22 +115,22 @@ CREATE TABLE `proizvodi` (
   `akcijskacena` decimal(10,2) NOT NULL,
   `kolicina` int(5) UNSIGNED NOT NULL,
   `kategorija` int(11) UNSIGNED NOT NULL,
-  `brend` int(5) UNSIGNED NOT NULL
+  `brend` int(5) UNSIGNED NOT NULL,
+  `slika` varchar(50) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Dumping data for table `proizvodi`
 --
 
-INSERT INTO `proizvodi` (`id`, `naziv`, `cena`, `akcijskacena`, `kolicina`, `kategorija`, `brend`) VALUES
-(1, 'Intel B960', '2399.00', '21999.00', 5, 1, 3),
-(2, 'Intel i7 4790k', '35999.00', '31500.00', 20, 1, 3),
-(3, 'MSI 789', '24980.00', '19900.00', 3, 2, 4),
-(4, 'Asus 456', '10050.00', '0.00', 6, 2, 1),
-(5, 'Toshiba T456', '82000.00', '79000.00', 6, 4, 2),
-(6, 'Asus n5632', '51000.00', '0.00', 19, 4, 1),
-(7, 'Genius m21', '4500.00', '0.00', 3, 5, 5),
-(8, 'AURORA STANDARD A150 ', '21990.00', '0.00', 9, 3, 1);
+INSERT INTO `proizvodi` (`id`, `naziv`, `cena`, `akcijskacena`, `kolicina`, `kategorija`, `brend`, `slika`) VALUES
+(1, 'Intel B960', '2399.00', '21999.00', 5, 1, 3, 'p5.gif'),
+(2, 'Intel i7 4790k', '35999.00', '31500.00', 14, 1, 3, 'p5.gif'),
+(3, 'MSI 789', '24980.00', '19900.00', 3, 2, 4, 'p5.gif'),
+(4, 'Asus 456', '10050.00', '0.00', 6, 2, 1, 'p5.gif'),
+(5, 'Toshiba T456', '82000.00', '79000.00', 6, 4, 2, 'p5.gif'),
+(6, 'Asus n5632', '51000.00', '0.00', 19, 4, 1, 'p5.gif'),
+(8, 'AURORA STANDARD A150 ', '21990.00', '0.00', 9, 3, 1, 'p5.gif');
 
 -- --------------------------------------------------------
 
@@ -105,17 +140,20 @@ INSERT INTO `proizvodi` (`id`, `naziv`, `cena`, `akcijskacena`, `kolicina`, `kat
 
 CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
+  `username` varchar(20) COLLATE utf8mb4_bin NOT NULL,
   `email` varchar(50) COLLATE utf8mb4_bin NOT NULL,
-  `password` varchar(10) COLLATE utf8mb4_bin NOT NULL
+  `password` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  `privilegija` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`) VALUES
-(1, 'pera@gmail.com', 'pera123'),
-(2, 'mika@gmail.com', 'mika123');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `privilegija`) VALUES
+(1, 'pera', 'pera@gmail.com', 'pera123', 1),
+(2, 'mika', 'mika@gmail.com', 'mika123', 1),
+(3, 'admin', 'admin@gmail.com', 'admin123', 2);
 
 --
 -- Indexes for dumped tables
@@ -133,6 +171,13 @@ ALTER TABLE `brendovi`
 ALTER TABLE `kategorije`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `naziv` (`naziv`);
+
+--
+-- Indexes for table `porudzbine`
+--
+ALTER TABLE `porudzbine`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Order_By_Users` (`iduser`);
 
 --
 -- Indexes for table `proizvodi`
@@ -163,6 +208,11 @@ ALTER TABLE `brendovi`
 ALTER TABLE `kategorije`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
+-- AUTO_INCREMENT for table `porudzbine`
+--
+ALTER TABLE `porudzbine`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
 -- AUTO_INCREMENT for table `proizvodi`
 --
 ALTER TABLE `proizvodi`
@@ -171,10 +221,16 @@ ALTER TABLE `proizvodi`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `porudzbine`
+--
+ALTER TABLE `porudzbine`
+  ADD CONSTRAINT `Order_By_Users` FOREIGN KEY (`iduser`) REFERENCES `proizvodi` (`id`);
 
 --
 -- Constraints for table `proizvodi`

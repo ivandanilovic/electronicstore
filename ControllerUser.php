@@ -32,8 +32,10 @@ class ControllerUser extends Controller
             $_SESSION["user_id"] = (int)$red['id'];
             $_SESSION["privilegija"] = (int)$red['privilegija'];
 
-            // Vraćamo se na kupovinu:
-            header("Location: Kupovina.php");
+            if (count($_SESSION['cart']) != 0) // Ako korpa nije prazna, vraćamo se na pregled korpe (checkout); u suprotnom, vraćamo se na početnu.
+                header("Location: Kupovina.php");
+            else
+                header("Location: Index.php");
         }
     }
 

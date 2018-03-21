@@ -14,8 +14,9 @@ class Proizvod
     private $akcijskacena;
     private $kolicina;
     private $kategorija;
+    private $slika;
 
-    public function __construct($id, $naziv, $cena, $akcijskacena, $kolicina, $kategorija)
+    public function __construct($id, $naziv, $cena, $akcijskacena, $kolicina, $kategorija, $slika)
     {
         $this->id=$id;
         $this->naziv=$naziv;
@@ -23,6 +24,23 @@ class Proizvod
         $this->cena=$cena;
         $this->akcijskacena=$akcijskacena;
         $this->kategorija=$kategorija;
+        $this->slika=$slika;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlika()
+    {
+        return $this->slika;
+    }
+
+    /**
+     * @param mixed $slika
+     */
+    public function setSlika($slika)
+    {
+        $this->slika = $slika;
     }
 
     /**

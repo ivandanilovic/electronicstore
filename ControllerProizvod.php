@@ -23,7 +23,7 @@ class ControllerProizvod extends Controller
         $rezultat = mysqli_query($this->db, $upit); // Ovdje će biti upisan blok podataka koji nam vrati ovaj upit.
         $proizvodi = array(); // Stvaramo novi niz u koji ćemo dodavati proizvode.
         while($red = mysqli_fetch_row($rezultat)) { // Dok nismo pročitali sve redove iz bloka 'rezultat'...
-            array_push($proizvodi, new Proizvod($red[0], $red[1], $red[2], $red[3], $red[4], $red[5]));
+            array_push($proizvodi, new Proizvod($red[0], $red[1], $red[2], $red[3], $red[4], $red[5], $red[7]));
         }
         $view = new ViewProizvodi();
         $view->showPage($proizvodi);
@@ -45,7 +45,7 @@ class ControllerProizvod extends Controller
 
         $proizvodi = array();
         $red = mysqli_fetch_row($rezultat); // Red sa podacima 'glavnog' proizvoda (onog koji prikazujemo).
-        $proizvod = new Proizvod($red[0], $red[1], $red[2], $red[3], $red[4], $red[5]);
+        $proizvod = new Proizvod($red[0], $red[1], $red[2], $red[3], $red[4], $red[5], $red[7]);
         array_push($proizvodi, $proizvod); // Dodali smo glavni proizvod.
         $slicni = $this->loadSlicniProizvodi($proizvod);
         foreach($slicni as $slican) array_push($proizvodi, $slican);
@@ -61,7 +61,7 @@ class ControllerProizvod extends Controller
         $rezultat = mysqli_query($this->db, $upit); // Ovdje će biti upisan blok podataka koji nam vrati ovaj upit.
         $proizvodi = array(); // Stvaramo novi niz u koji ćemo dodavati proizvode.
         while($red = mysqli_fetch_row($rezultat)) { // Dok nismo pročitali sve redove iz bloka 'rezultat'...
-            array_push($proizvodi, new Proizvod($red[0], $red[1], $red[2], $red[3], $red[4], $red[5]));
+            array_push($proizvodi, new Proizvod($red[0], $red[1], $red[2], $red[3], $red[4], $red[5], $red[7]));
         }
         $view = new ViewProizvodi();
         $view->showPage($proizvodi);
@@ -74,7 +74,7 @@ class ControllerProizvod extends Controller
         $rezultat = mysqli_query($this->db, $upit);
         $brojac = 3; // Broj proizovda koji maksimalno trebamo pročitati.
         while (($red = mysqli_fetch_assoc($rezultat)) && $brojac-- != 0) { // Dok nismo pročitali max 3 reda iz bloka 'rezultat'...
-            array_push($proizvodi, new Proizvod($red['id'], $red['naziv'], $red['cena'], $red['akcijskacena'], $red['kolicina'], $red['kategorija']));
+            array_push($proizvodi, new Proizvod($red['id'], $red['naziv'], $red['cena'], $red['akcijskacena'], $red['kolicina'], $red['kategorija'], $red['slika']));
         }
         return $proizvodi;
     }
@@ -98,7 +98,7 @@ class ControllerProizvod extends Controller
         {
             $upit = "SELECT * FROM proizvodi WHERE id='" . $id . "'";
             $red = mysqli_fetch_assoc(mysqli_query($this->db, $upit));
-            array_push($proizvodi,new Proizvod($red['id'], $red['naziv'], $red['cena'], $red['akcijskacena'], $red['kolicina'], $red['kategorija']));
+            array_push($proizvodi,new Proizvod($red['id'], $red['naziv'], $red['cena'], $red['akcijskacena'], $red['kolicina'], $red['kategorija'], $red['slika']));
         }
         $view = new ViewKupovina();
         $view->showPage($proizvodi);
@@ -115,15 +115,53 @@ class ControllerProizvod extends Controller
             array_push($niz_kategorija, new ModelKategorije($kategorija['id'],$kategorija['naziv']));
         }
         $view = new ViewDodavanjeProizvoda();
-        $view->showPage(array(kategorije => $niz_kategorija, brendovi => $niz_brendova));//asocijativni niz
+        $view->showPage(array('kategorije' => $niz_kategorija, 'brendovi' => $niz_brendova));//asocijativni niz
     }
 
-    public function dodajProizvod($naziv, $cena, $akijskacena, $kolicina, $kategorija, $brend) // ??
+    public function dodajProizvod($naziv, $cena, $akijskacena, $kolicina, $kategorija, $brend, $slika) // ??
     {
-        $upit = "INSERT INTO proizvodi (id, naziv, cena, akijskacena, kolicina, kategorija, brend) 
-                 VALUES (null, '".$naziv."', '".$cena."', '".$akijskacena."', '".$kolicina."', '".$kategorija."', '".$brend."')";
-        var_dump($upit);
-        mysqli_query($this->db, $upit);
+        $naziv_slike = $this->okaciSliku($slika, $naziv);
+        $upit = "INSERT INTO proizvodi (naziv, cena, akijskacena, kolicina, kategorija, brend, slika) 
+                 VALUES ('".$naziv."', '".$cena."', '".$akijskacena."', '".$kolicina."', '".$kategorija."', '".$brend."', '".$naziv_slike."')";
+        var_dump($upit, mysqli_query($this->db, $upit));
+    }
+
+    private function okaciSliku($slika, $naziv)
+    {
+        $target_dir = "images/";
+        $target_file = $target_dir . $naziv . basename($slika["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($slika["tmp_name"]);
+        if($check !== false) {
+            $uploadOk = 1;
+        } else {
+            $uploadOk = 0;
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $uploadOk = 0;
+        }
+        // Check file size
+        if ($slika["size"] > 7000000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        var_dump($naziv . basename($slika['name']));
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 1) {
+            if (move_uploaded_file($slika["tmp_name"], $target_file)) {
+                return $naziv . basename($slika["name"]);
+            } else {
+                return null;
+            }
+        }
+        else
+            return null;
     }
 
     /*public function loadNoviProizvod($id)

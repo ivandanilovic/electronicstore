@@ -15,7 +15,7 @@ $k = new ControllerProizvod();
 if(!empty($_POST)) // ako smo poslali parametre onda tereba obraditi login
 {
     // provjera da li je polje prazno?
-    $k->dodajProizvod($_POST['Naziv'], $_POST['Cena'], $_POST['AkcijskaCena'], $_POST['Kolicina'], $_POST['Kategorija'], $_POST['Brend']);
+    $k->dodajProizvod($_POST['Naziv'], $_POST['Cena'], $_POST['AkcijskaCena'], $_POST['Kolicina'], $_POST['Kategorija'], $_POST['Brend'], $_FILES['Slika']);
 }
 else // ako nema parametara prikazi formu login
 {

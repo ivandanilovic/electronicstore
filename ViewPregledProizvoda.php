@@ -54,7 +54,7 @@ class ViewPregledProizvoda extends View
                 <div class="top_prod_box"></div>
                 <div class="center_prod_box">
                   <div class="product_title"><a href="details.html">'.$proizvodi[$i]->getNaziv().'</a></div>
-                  <div class="product_img"><a href="details.html"><img src="images/laptop.gif" alt="" border="0" /></a></div>
+                  <div class="product_img"><a href="details.html"><img src="images/'.$proizvodi[$i]->getSlika().'" alt="" border="0" /></a></div>
                   ';
             if ($proizvodi[$i]->getAkcijskaCena() == 0) {
                 echo '<div class="prod_price"><span class="price">' . $proizvodi[$i]->getCena() . ' rsd </span></div>';

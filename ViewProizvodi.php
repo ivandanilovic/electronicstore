@@ -17,7 +17,7 @@ class ViewProizvodi extends View
                     <div class="top_prod_box"></div>
                     <div class="center_prod_box">
                       <div class="product_title"><a href="proizvod.php?id=' . $proizvod->getId() .'&kategorija='.$proizvod->getKategorija().'">' . $proizvod->getNaziv() . '</a></div>
-                      <div class="product_img"><a href="proizvod.php?id='.$proizvod->getId().'&&proizvod.php?kategorija='.$proizvod->getKategorija().'"><img src="images/p5.gif" alt="" border="0" /></a></div> 
+                      <div class="product_img"><a href="proizvod.php?id='.$proizvod->getId().'&&proizvod.php?kategorija='.$proizvod->getKategorija().'"><img src="images/'.$proizvod->getSlika().'" alt="" border="0" /></a></div> 
                 ';
             if ($proizvod->getAkcijskaCena() == 0) {
                 echo '<div class="prod_price"><span class="price">' . $proizvod->getCena() . ' rsd </span></div>';
