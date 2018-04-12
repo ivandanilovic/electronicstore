@@ -33,6 +33,9 @@ abstract class View
 
     public abstract function showContent($data);
 
+    /**
+     * @param $data
+     */
     public function showPage($data)
 
     {
@@ -85,13 +88,14 @@ abstract class View
                   <ul class="menu">
                     <li><a href="Index.php" class="nav1"> Home</a></li>
                     <li class="divider"></li>
-                    <li><a href="#" class="nav2">Products</a></li>
+                    <li><a href="Notifikacije.php" class="nav2">Notify</a></li>
                     <li class="divider"></li>
                     <li><a href="#" class="nav3">Specials</a></li>
                     <li class="divider"></li>
                     <li><a href="Login.php" class="nav4">' . ($_SESSION["user_id"]>0 ? "My accaunt [" . $_SESSION["user_id"] . "]" : "Login") . '</a></li>
                     <li class="divider"></li>
-                    <li><a href="#" class="nav4">Sign Up</a></li>
+                    <!--<li><a href="#" class="nav4">Sign Up</a></li>-->
+                    <li><a href="Logout.php" class="nav4">' . ($_SESSION["user_id"]>0 ? "Logout" : "Sing Up") . '</a></li>
                     <li class="divider"></li>
                     <li><a href="#" class="nav5">Shipping</a></li>
                     <li class="divider"></li>
@@ -129,8 +133,11 @@ abstract class View
                   </div>
                   <div class="title_box">Newsletter</div>
                   <div class="border_box">
-                    <input type="text" name="newsletter" class="newsletter_input" value="your email"/>
-                    <a href="#" class="join">join</a> </div>
+                  <form method="post" action="dodaj_adresu.php">
+                    <input type="email" name="newsletter" class="newsletter_input" placeholder="your email" required/>
+                    <button type="submit">Join</button>
+                  </form>
+                  </div>
                   <div class="banner_adds"> <a href="#"><img src="images/bann2.jpg" alt="" border="0" /></a> </div>
                 </div>
                 <!-- end of left content -->

@@ -26,8 +26,17 @@ class ViewDodavanjeProizvoda extends View
             echo '
             </select>
             <br>
-            <label>Brend:</label><input type="text" name="Brend"/> <br>
-            <input type="file" name="Slika" id="Slika"/> <br>
+            <label>Brend:</label>
+            <select name="Brend">
+            ';
+            foreach ($data['brendovi'] as $brend)
+            {
+                echo '<option value="'. $brend->getId() .'">'. $brend->getNaziv() .'</option>';
+            }
+            echo '
+            </select>
+            <br>
+            <input type="file" name="Slika" id="Slika"> <br>
             <button type="submit">Dodaj</button>
         </form>
         ';

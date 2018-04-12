@@ -83,6 +83,20 @@ class ControllerUser extends Controller
         $k->load();
         // Poruka?
     }
+
+    public function dodajAdresu($adresa) {
+        $upit = 'INSERT INTO notifikacije (adrese) VALUES ("'.$adresa.'")';
+        mysqli_query($this->db, $upit);
+    }
+
+    public function obavestiKorisnike() {
+        $upit = "SELECT * FROM notifikacije";
+        $rezultat = mysqli_query($this->db, $upit);
+        while ($red = mysqli_fetch_assoc($rezultat)) {
+            var_dump(mail($red['adrese'], "pozdrav", "Ovo je probna poruka.", "From: danilovicivan6@gmail.com"));
+        }
+    }
+
 }
 
 /*

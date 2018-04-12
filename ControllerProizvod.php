@@ -108,11 +108,19 @@ class ControllerProizvod extends Controller
     {
         $upit = "SELECT * FROM kategorije ";
         $kategorije = mysqli_query($this->db, $upit);
+
+        $upit = "SELECT * FROM brendovi ";
+        $brendovi = mysqli_query($this->db, $upit);
+
         $niz_kategorija=array();
         $niz_brendova = array();
         while ($kategorija = mysqli_fetch_assoc($kategorije)) // fetch vraća null kada smo došli do kraja $kategorije; logički, null == false
         {
             array_push($niz_kategorija, new ModelKategorije($kategorija['id'],$kategorija['naziv']));
+        }
+        while ($brend = mysqli_fetch_assoc($brendovi)) // fetch vraća null kada smo došli do kraja $kategorije; logički, null == false
+        {
+            array_push($niz_brendova, new ModelBrendovi($brend['id'],$brend['naziv']));
         }
         $view = new ViewDodavanjeProizvoda();
         $view->showPage(array('kategorije' => $niz_kategorija, 'brendovi' => $niz_brendova));//asocijativni niz
@@ -121,9 +129,10 @@ class ControllerProizvod extends Controller
     public function dodajProizvod($naziv, $cena, $akijskacena, $kolicina, $kategorija, $brend, $slika) // ??
     {
         $naziv_slike = $this->okaciSliku($slika, $naziv);
-        $upit = "INSERT INTO proizvodi (naziv, cena, akijskacena, kolicina, kategorija, brend, slika) 
-                 VALUES ('".$naziv."', '".$cena."', '".$akijskacena."', '".$kolicina."', '".$kategorija."', '".$brend."', '".$naziv_slike."')";
-        var_dump($upit, mysqli_query($this->db, $upit));
+        $upit = "INSERT INTO proizvodi (naziv, cena, akcijskacena, kolicina, kategorija, brend, slika) 
+                 VALUES (\"".$naziv."\", ".$cena.", ".$akijskacena.", ".$kolicina.", ".$kategorija.", ".$brend.", \"".$naziv_slike."\")";
+        mysqli_query($this->db, $upit);
+        header("Location: Index.php");
     }
 
     private function okaciSliku($slika, $naziv)
@@ -131,6 +140,7 @@ class ControllerProizvod extends Controller
         $target_dir = "images/";
         $target_file = $target_dir . $naziv . basename($slika["name"]);
         $uploadOk = 1;
+        $upload_message = "OK";
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
         $check = getimagesize($slika["tmp_name"]);
@@ -138,20 +148,24 @@ class ControllerProizvod extends Controller
             $uploadOk = 1;
         } else {
             $uploadOk = 0;
+            $upload_message = "Image too large.";
         }
         // Check if file already exists
         if (file_exists($target_file)) {
             $uploadOk = 0;
+            $upload_message = "File does not exist.";
+
         }
         // Check file size
         if ($slika["size"] > 7000000) {
             $uploadOk = 0;
+            $upload_message = "Image too large.";
         }
         // Allow certain file formats
         if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
             $uploadOk = 0;
+            $upload_message = "Image not supported.";
         }
-        var_dump($naziv . basename($slika['name']));
         // Check if $uploadOk is set to 0 by an error
         if ($uploadOk == 1) {
             if (move_uploaded_file($slika["tmp_name"], $target_file)) {
